@@ -22,7 +22,7 @@ const MyReservationsPage = () => {
       }
 
       try {
-        const response = await axios.get("http://localhost:3000/reservations", {
+        const response = await axios.get("https://moviespot-efrei.onrender.com/reservations", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -46,7 +46,7 @@ const MyReservationsPage = () => {
     for (const res of reservationsList) {
       if (!moviesInfo[res.movieId]) {
         try {
-          const movieResponse = await axios.get(`http://localhost:3000/movies/${res.movieId}`, {
+          const movieResponse = await axios.get(`https://moviespot-efrei.onrender.com/movies/${res.movieId}`, {
             headers: { Authorization: `Bearer ${token}` },
           });
 
@@ -99,7 +99,7 @@ const MyReservationsPage = () => {
     if (!token) return;
   
     try {
-      await axios.delete(`http://localhost:3000/reservations/${reservationId}`, {
+      await axios.delete(`https://moviespot-efrei.onrender.com/reservations/${reservationId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
   

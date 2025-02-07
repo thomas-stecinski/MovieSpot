@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const API_URL = process.env.API_NEST
+
 const Register = () => {
   const [formData, setFormData] = useState({ username: "", email: "", password: "" });
   const [error, setError] = useState("");
@@ -19,10 +21,10 @@ const Register = () => {
 
     try {
       // Étape 1 : Inscription
-      await axios.post("http://localhost:3000/auth/register", formData);
+      await axios.post("https://moviespot-efrei.onrender.com/auth/register", formData);
 
       // Étape 2 : Connexion automatique
-      const loginResponse = await axios.post("http://localhost:3000/auth/login", {
+      const loginResponse = await axios.post("https://moviespot-efrei.onrender.com/auth/login", {
         email: formData.email,
         password: formData.password
       });

@@ -22,7 +22,7 @@ const MovieDetail = () => {
       }
 
       try {
-        const response = await axios.get(`http://localhost:3000/movies/${id}`, {
+        const response = await axios.get(`https://moviespot-efrei.onrender.com/movies/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`, // Ajouter le token à l'en-tête
           },

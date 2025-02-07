@@ -2,11 +2,14 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const API_URL = process.env.API_NEST
+
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -25,7 +28,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:3000/auth/login", formData);
+      const response = await axios.post("https://moviespot-efrei.onrender.com/auth/login", formData);
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("username", response.data.username);
 

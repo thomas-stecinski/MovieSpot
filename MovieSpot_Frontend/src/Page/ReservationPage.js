@@ -31,14 +31,14 @@ const ReservationPage = () => {
       }
 
       try {
-        const reservationsResponse = await axios.get("http://localhost:3000/reservations", {
+        const reservationsResponse = await axios.get("https://moviespot-efrei.onrender.com/reservations", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
         setReservations(reservationsResponse.data);
 
         if (!movie) {
-          const movieResponse = await axios.get(`http://localhost:3000/movies/${id}`, {
+          const movieResponse = await axios.get(`https://moviespot-efrei.onrender.com/movies/${id}`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           setMovie(movieResponse.data);
@@ -158,7 +158,7 @@ const ReservationPage = () => {
     };
   
     try {
-      await axios.post("http://localhost:3000/reservations", reservationData, {
+      await axios.post("https://moviespot-efrei.onrender.com/reservations", reservationData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,

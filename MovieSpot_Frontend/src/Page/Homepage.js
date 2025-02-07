@@ -12,7 +12,7 @@ const Homepage = () => {
   const token = localStorage.getItem("token"); // Récupérer le token
   const navigate = useNavigate(); // Utiliser navigate pour rediriger vers la page de détail
 
-  const API_URL = "http://localhost:3000/movies"; // Remplace par l'URL de ton API
+  const API_URL = "https://moviespot-efrei.onrender.com/movies"; // Remplace par l'URL de ton API
 
   useEffect(() => {
     setUsername(localStorage.getItem("username"));
