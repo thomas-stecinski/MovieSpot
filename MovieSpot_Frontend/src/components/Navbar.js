@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Navbar, Nav, Container, Button, Dropdown } from "react-bootstrap"; // Importation de Bootstrap
+import { Navbar, Nav, Container, Dropdown } from "react-bootstrap"; // Importation de Bootstrap
 
 const Navigation = () => {
   const [username, setUsername] = useState(localStorage.getItem("username"));
