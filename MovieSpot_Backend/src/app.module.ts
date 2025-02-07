@@ -21,6 +21,9 @@ import { Reservation } from './reservation/entities/reservation.entity';
       database: process.env.DB_NAME,
       entities: [User, Reservation], 
       synchronize: true,
+      ssl: {
+        rejectUnauthorized: false, // ✅ Ajoute cette ligne pour éviter les problèmes SSL sur Render
+      },
     }),
     UserModule, 
     AuthModule,
