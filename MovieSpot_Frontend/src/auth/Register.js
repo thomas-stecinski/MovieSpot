@@ -1,19 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Login = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+const Register = () => {
+  const [formData, setFormData] = useState({ username: "", email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      navigate("/"); // Redirige vers la page d'accueil si déjà connecté
-    }
-  }, [navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,13 +18,22 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:3000/auth/login", formData);
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("username", response.data.username);
+      // Étape 1 : Inscription
+      await axios.post("http://localhost:3000/auth/register", formData);
 
-      navigate("/");
+      // Étape 2 : Connexion automatique
+      const loginResponse = await axios.post("http://localhost:3000/auth/login", {
+        email: formData.email,
+        password: formData.password
+      });
+
+      // Sauvegarde du token et du username
+      localStorage.setItem("token", loginResponse.data.token);
+      localStorage.setItem("username", loginResponse.data.username);
+
+      navigate("/"); // Redirection vers l'accueil
     } catch (err) {
-      setError(err.response?.data?.message || "Erreur lors de la connexion");
+      setError(err.response?.data?.message || "Erreur lors de l'inscription");
     } finally {
       setLoading(false);
     }
@@ -41,13 +43,26 @@ const Login = () => {
     <div className="d-flex justify-content-center align-items-center min-vh-100 bg-light">
       <div className="card shadow-sm p-4" style={{ width: '400px', borderRadius: '12px' }}>
         <div className="text-center mb-4">
-          <h3 className="fw-bold">Connexion</h3>
-          <p className="text-muted">Accédez à votre compte</p>
+          <h3 className="fw-bold">Créer un compte</h3>
+          <p className="text-muted">Inscrivez-vous pour continuer</p>
         </div>
 
         {error && <div className="alert alert-danger text-center">{error}</div>}
 
         <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label htmlFor="username" className="form-label">Nom d'utilisateur</label>
+            <input
+              type="text"
+              className="form-control"
+              id="username"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              required
+              placeholder="Entrez votre nom d'utilisateur"
+            />
+          </div>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">Adresse email</label>
             <input
@@ -76,21 +91,18 @@ const Login = () => {
           </div>
 
           <button type="submit" className="btn btn-primary w-100 py-2 mt-3" disabled={loading}>
-            {loading ? "Connexion..." : "Se connecter"}
+            {loading ? "Inscription..." : "S'inscrire"}
           </button>
         </form>
 
         <div className="text-center mt-3">
-          <button
-            className="btn btn-outline-secondary w-100"
-            onClick={() => navigate("/register")}
-          >
-            S'inscrire
-          </button>
+          <p className="text-muted">
+            Déjà un compte ? <a href="/login" className="text-decoration-none">Connectez-vous</a>
+          </p>
         </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Register;
