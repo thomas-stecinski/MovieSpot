@@ -10,48 +10,39 @@ import { ApiBearerAuth, ApiOperation, ApiTags, ApiBody, ApiParam, ApiResponse } 
 export class ReservationController {
   constructor(private readonly reservationService: ReservationService) {}
 
-  /**
-   * ✅ Créer une réservation
-   */
   @Post()
-  @ApiOperation({ summary: 'Créer une réservation (🔐 Authentification requise)' })
+  @ApiOperation({ summary: 'Créer une réservation (auth requis)' })
   @ApiBody({
-    description: 'ID du film et heure du créneau pour la réservation',
+    description: 'ID film et heure/date reservation',
     type: Object,
     examples: {
       example1: {
         summary: 'Exemple de réservation',
         value: {
-          movieId: 920, // ID du film pour le test
-          startTime: "2024-12-15T10:00:00Z", // Heure du créneau
+          movieId: 920, 
+          startTime: "2025-02-08T10:00:00Z", 
         },
       },
     },
   })
   @ApiResponse({ status: 201, description: 'Réservation créée avec succès.' })
-  @ApiResponse({ status: 400, description: 'Conflit de réservation (film déjà réservé à cet horaire).' })
+  @ApiResponse({ status: 400, description: 'Cette horaire est déja pris' })
   async createReservation(
     @Req() req, 
-    @Body() body: { movieId: number, startTime: string } // Entrée simplifiée : ID du film et heure du créneau
+    @Body() body: { movieId: number, startTime: string }
   ) {
     return this.reservationService.createReservation(req.user, body.movieId, new Date(body.startTime));
   }
 
-  /**
-   * ✅ Lister les réservations de l'utilisateur
-   */
   @Get()
-  @ApiOperation({ summary: 'Récupérer ses réservations (🔐 Authentification requise)' })
-  @ApiResponse({ status: 200, description: 'Liste des réservations récupérée avec succès.' })
+  @ApiOperation({ summary: 'Récupérer des réservations (Auth requis)' })
+  @ApiResponse({ status: 200, description: 'Liste des réservations' })
   async getReservations(@Req() req) {
     return this.reservationService.getUserReservations(req.user);
   }
 
-  /**
-   * ✅ Annuler une réservation
-   */
   @Delete(':id')
-  @ApiOperation({ summary: 'Annuler une réservation (🔐 Authentification requise)' })
+  @ApiOperation({ summary: 'Annuler une réservation (Auth requis)' })
   @ApiParam({ name: 'id', type: 'number', description: 'ID de la réservation à annuler', example: 1 })
   @ApiResponse({ status: 200, description: 'Réservation annulée avec succès.' })
   @ApiResponse({ status: 404, description: 'Réservation introuvable.' })

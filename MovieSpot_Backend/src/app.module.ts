@@ -19,10 +19,10 @@ import { Reservation } from './reservation/entities/reservation.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User, Reservation], // ✅ Vérifie bien que User est là
+      entities: [User, Reservation], 
       synchronize: true,
     }),
-    UserModule, // ✅ Ajouté en premier pour s'assurer qu'il est bien initialisé
+    UserModule, 
     AuthModule,
     MoviesModule,
     ReservationModule,

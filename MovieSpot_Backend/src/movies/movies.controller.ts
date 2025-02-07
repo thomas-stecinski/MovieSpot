@@ -10,14 +10,11 @@ import { ApiBearerAuth, ApiOperation, ApiQuery, ApiParam, ApiTags } from '@nestj
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
-  /**
-   * ✅ Endpoint `/movies` : Recherche de films par titre ou liste populaire
-   */
   @Get()
-  @ApiOperation({ summary: 'Obtenir une liste de films avec pagination, recherche et tri (🔒 Authentification requise)' })
-  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Numéro de la page' })
-  @ApiQuery({ name: 'search', required: false, type: String, description: 'Titre du film à rechercher' })
-  @ApiQuery({ name: 'sort', required: false, type: String, description: 'Tri des résultats (ex: popularity.desc)' })
+  @ApiOperation({ summary: 'Obtenir une liste de films avec pagination, recherche et tri (Auth requise)' })
+  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Numéro de page' })
+  @ApiQuery({ name: 'search', required: false, type: String, description: 'Titre du film' })
+  @ApiQuery({ name: 'sort', required: false, type: String, description: 'Tri par resultats' })
   async getMovies(
     @Query('page') page: number = 1,
     @Query('search') search?: string,
@@ -26,11 +23,8 @@ export class MoviesController {
     return this.moviesService.getMovies(page, search, sort);
   }
 
-  /**
-   * ✅ Endpoint `/movies/:id` : Récupérer les détails d’un film par son ID
-   */
   @Get(':id')
-  @ApiOperation({ summary: 'Obtenir les détails d’un film par son ID' })
+  @ApiOperation({ summary: 'Obtention infos film par ID' })
   @ApiParam({ name: 'id', description: 'ID du film' })
   async getMovieById(@Param('id') id: string) {
     return this.moviesService.getMovieById(id);

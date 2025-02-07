@@ -31,7 +31,7 @@ const Navigation = () => {
               <Link to="/" className="nav-link text-dark">Films</Link>
             </Nav.Item>
             <Nav.Item className="ms-3">
-              <Link to="/reservations" className="nav-link text-dark">Réservations</Link>
+              <Link to="/myreservation" className="nav-link text-dark">Réservations</Link>
             </Nav.Item>
           </Nav>
 
@@ -42,7 +42,7 @@ const Navigation = () => {
                 {username}
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item onClick={() => navigate("/reservations")}>
+                <Dropdown.Item onClick={() => navigate("/myreservation")}>
                   Mes réservations
                 </Dropdown.Item>
                 <Dropdown.Item onClick={handleLogout}>Se déconnecter</Dropdown.Item>

@@ -16,17 +16,13 @@ export class ReservationService {
     private userRepository: Repository<User>,
   ) {}
 
-  /**
-   * ✅ Créer une réservation
-   */
   async createReservation(userPayload: { sub: number }, movieId: number, startTime: Date) {
     const user = await this.userRepository.findOne({ where: { id: userPayload.sub } });
     
     if (!user) {
       throw new NotFoundException('Utilisateur non trouvé');
     }
-
-    // Appel à l'API TMDb pour récupérer les informations du film, y compris la durée
+    
     let movieTitle: string;
     let movieRuntime: number;
     try {
@@ -46,11 +42,9 @@ export class ReservationService {
       throw new BadRequestException('Durée du film introuvable');
     }
 
-    // Calcul de l'heure de fin en fonction de la durée du film
     const endTime = new Date(startTime);
-    endTime.setMinutes(endTime.getMinutes() + movieRuntime); // Ajout de la durée du film en minutes
+    endTime.setMinutes(endTime.getMinutes() + movieRuntime);
 
-    // Vérification des conflits de réservation
     const conflictingReservation = await this.reservationRepository.findOne({
       where: { 
         user,
@@ -60,7 +54,7 @@ export class ReservationService {
     });
 
     if (conflictingReservation) {
-      throw new BadRequestException('Conflit de réservation : Un film est déjà réservé à cet horaire');
+      throw new BadRequestException('film est déjà réservé à cet horaire');
     }
 
     const reservation = this.reservationRepository.create({
@@ -74,9 +68,6 @@ export class ReservationService {
     return await this.reservationRepository.save(reservation);
   }
 
-  /**
-   * ✅ Récupérer les réservations de l'utilisateur
-   */
   async getUserReservations(userPayload: { sub: number }) {
     const user = await this.userRepository.findOne({ where: { id: userPayload.sub } });
 
@@ -86,10 +77,7 @@ export class ReservationService {
 
     return await this.reservationRepository.find({ where: { user } });
   }
-
-  /**
-   * ✅ Annuler une réservation
-   */
+  
   async cancelReservation(userPayload: { sub: number }, id: number) {
     const user = await this.userRepository.findOne({ where: { id: userPayload.sub } });
 
